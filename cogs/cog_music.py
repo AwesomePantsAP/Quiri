@@ -160,14 +160,14 @@ class cog_music(BaseCog):
         song_name = ctx.message.content[len(ctx.prefix) + len("music play") + 1:]
         print(song_name)
 
-        #does this server have a queue?
-        if not str(ctx.message.guild.id) in self.queues:
-            #nope, add a queue
-            self.queues.append(str(ctx.message.guild.id), [])
+        #get the server's queue
+        original_queue = []
+        if str(ctx.message.guild.id) in self.queues:
+            original_queue = self.queues[str(ctx.message.guild.id)]
 
         #add all the songs(for one song we still get a playlist of one) to the queue
         song_info = get_song_info(song_name)
-        self.queues[str(ctx.message.guild.id)] += song_info
+        self.queues[str(ctx.message.guild.id)] = original_queue + song_info
 
         #only begin playing if we aren't already playing a song
         if not voice.is_playing():

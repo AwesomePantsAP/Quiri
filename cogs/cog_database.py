@@ -42,4 +42,4 @@ class cog_database(BaseCog):
 
     #commits changes done to the database
     def commit(self):
-        self.connetion.commit()
+        self.connection.commit()

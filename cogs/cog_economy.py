@@ -28,6 +28,7 @@ class cog_economy(BaseCog):
         )
         """
         self.db_cog.do_query(create_table_query)
+        self.db_cog.commit()
 
     #returns true if a balance exists
     def does_balance_exist(self, uuid, guild_id):
@@ -41,7 +42,7 @@ class cog_economy(BaseCog):
         #check if the balance already exists
         if not self.does_balance_exist(uuid, guild_id):
             #it doesn't exist; create it
-            create_balance_query = "INSERT INTO balances VALUES (?, ?, ?)"
+            create_balance_query = "INSERT INTO balances(balance, uuid, guild_id) VALUES (?, ?, ?)"
             try:
                 self.db_cog.do_query(create_balance_query, (balance, uuid, guild_id))
                 self.db_cog.commit()
@@ -188,7 +189,7 @@ class cog_economy(BaseCog):
 
         #get the top n balances
         get_balances_query = "SELECT balance, uuid FROM balances WHERE guild_id=? ORDER BY balance"
-        result = self.db_cog.do_query(get_balances_query, (ctx.guild.id))
+        result = self.db_cog.do_query(get_balances_query, (ctx.guild.id,))
 
         if not result is None:
             #iterate through the rows in the result

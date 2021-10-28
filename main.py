@@ -1,12 +1,16 @@
 import os
 import asyncio
+import discord
 # load our local env so we dont have the token in public
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 
 from cogs import cog_cog_manager
 
-client = commands.Bot(command_prefix='!')  # prefix our commands with '!'
+intents = discord.Intents.default()
+intents.members = True
+
+client = commands.Bot(command_prefix='!', intents=intents)  # prefix our commands with '!'
 
 #load cogs
 cog_manager = cog_cog_manager.cog_cog_manager(

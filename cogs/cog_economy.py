@@ -201,7 +201,9 @@ class cog_economy(BaseCog):
 
                 balance = row[0] # user balance
 
-                user = self.client.get_user(row[1]) # user
+                user = await self.client.fetch_user(row[1]) # user
+                print(row[1])
+                print(user)
                 user_fullname = user.name + "#" + user.discriminator # username + discriminator
 
                 #append the formatted entry
@@ -218,7 +220,21 @@ class cog_economy(BaseCog):
     #check another user's balance in the guild
     @economy.command()
     async def checkbalance(self, ctx, user):
-        pass
+        #get the user id
+        uuid = user[2:-1]
+        #get the guild id
+        guild_id = ctx.guild.id
+
+        #get the balance(if it exists)
+        if self.does_balance_exist(uuid, guild_id):
+            #the user has a balance, get it
+            balance = self.get_balance(uuid, guild_id)
+
+            #inform the author of the user's balance
+            await ctx.send(f"{ctx.message.author.mention} {user} Has `${balance}`")
+        else:
+            #the user doesn't have a balance
+            await ctx.send(f"{ctx.message.author.mention} {user} Has no balance!")
 
     #pay user in the guild by amount
     @economy.command()

@@ -17,7 +17,8 @@ cog_manager = cog_cog_manager.cog_cog_manager(
     client,
     "cog_database",
     "cog_economy",
-    "cog_music"
+    "cog_music",
+    "cog_survival_of_the_least"
 )
 
 @client.event  # check if bot is ready
